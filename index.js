@@ -1,4 +1,6 @@
 const axios = require('axios');
+const cors = require('cors');
+
 const dotenv = require('dotenv');
 const express = require('express');
 const {Client} = require('discord.js');
@@ -11,6 +13,12 @@ app.listen(port, () => {
     console.log(`Listening: http://localhost:${port}`);
 });
 
+const corsOptions = {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
 client.commands = new Map();
 const headers = {
     'Authorization': `Bot ${process.env.TOKEN}`,
@@ -108,6 +116,7 @@ client.once("reconnecting", () => {
 client.once("disconnect", () => {
     console.log("Disconnect!");
 });
+app.use(cors(corsOptions));
 
 
 const {

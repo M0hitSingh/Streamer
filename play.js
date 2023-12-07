@@ -76,10 +76,10 @@ module.exports = {
         currentConnection = connection; 
         currentMessage = message; 
 
-        if (connection.state.status === VoiceConnectionStatus.Ready) {
-            createPlayer();
-            return message.reply('** Song added to Queue!**');
-        }
+        // if (connection.state.status === VoiceConnectionStatus.Ready) {
+        //     createPlayer();
+        //     return message.reply('** Song added to Queue!**');
+        // }
 
         const listener = async (oldState, newState) => {
             if (newState.member.user.bot) {

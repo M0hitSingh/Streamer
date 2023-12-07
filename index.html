@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="discord">
+        <b>Add Streamer Bot to Your Discord Channel 🌟 </b>
+        <button class="join-button" style="float: right;" onclick="window.open('https://discord.com/api/oauth2/authorize?client_id=1181141044763557958&permissions=8&scope=bot')">Join</button>
+    </div>
+    <div class="s008">
+        <form id="searchForm" action="/index.html" >
+            <div class="inner-form">
+                <div class="basic-search">
+                    <div class="input-field">
+                        <input id="search" type="text" name="content" placeholder="Type Youtube Song or VideoID" />
+                    </div>
+                </div>
+                <div class="advance-search">
+                    <div class="row">
+                        <div class="input-field">
+                            <div class="input-select">
+                                <input data-trigger="" name="ChannelID" placeholder="Channel ID">
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <div class="input-select">
+                                <input data-trigger="" name="VoiceChannelID" placeholder="Voice Channel ID">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row third">
+                        <div class="input-field">
+                            <div class="result-count">
+                                <span>Streamer</span>Bot</div>
+                            <div class="group-btn">
+                                <button class="btn-delete" id="delete" type="reset">Reset</button>
+                                <button class="btn-search" type="submit" >Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        async function search(formData) {
+            let data={};
+            for (const [name, value] of formData.entries()) {
+                data = { [name]: value, ...data };
+            }
+        
+            console.log(data);
+            document.getElementById('searchForm').reset();
+            await fetch('http://localhost:3000/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(responseData => {
+                console.log('API Response:', responseData);
+            })
+            .catch(error => {
+                console.error('Error sending data to API:', error);
+            });
+        }
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            search(formData);
+        });
+    </script>
+</body>
+</html>
